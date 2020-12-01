@@ -1,0 +1,135 @@
+package com.formacionbdi.microservicios.app.deportes.models.entity;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+import javax.validation.constraints.NotEmpty;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.formacionbdi.microservicios.commons.registros.models.entity.Registro;
+import com.formacionbdi.microservicios.commons.examenes.models.entity.Examen;
+
+@Entity
+@Table(name="deportes")
+public class Deporte {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	@NotEmpty
+	private String nombre;
+	
+	@Column(name="create_at")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date createAt;
+	
+	@JsonIgnoreProperties(value= {"deporte"}, allowSetters = true)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "deporte", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<DeporteRegistro> deporteRegistros;
+	
+	// @OneToMany(fetch = FetchType.LAZY)
+	@Transient
+	private List<Registro> registros;
+	
+	@ManyToMany(fetch = FetchType.LAZY)
+	private List<Examen> examenes;
+
+	@PrePersist
+	public void prePersist() {
+		this.createAt = new Date();
+	}
+
+	public Deporte() {
+		this.registros = new ArrayList<>();
+		this.examenes = new ArrayList<>();
+		this.deporteRegistros = new ArrayList<>();
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public Date getCreateAt() {
+		return createAt;
+	}
+
+	public void setCreateAt(Date createAt) {
+		this.createAt = createAt;
+	}
+
+	public List<Registro> getRegistros() {
+		return registros;
+	}
+
+	public void setRegistros(List<Registro> registros) {
+		this.registros = registros;
+	}
+	
+	public void addRegistro(Registro registro) {
+		this.registros.add(registro);
+	}
+
+	public void removeRegistro(Registro registro) {
+		this.registros.remove(registro);
+	}
+
+	public List<Examen> getExamenes() {
+		return examenes;
+	}
+
+	public void setExamenes(List<Examen> examenes) {
+		this.examenes = examenes;
+	}
+
+	public void addExamen(Examen examen) {
+		this.examenes.add(examen);
+	}
+	
+	public void removeExamen(Examen examen) {
+		this.examenes.remove(examen);
+	}
+
+	public List<DeporteRegistro> getDeporteRegistros() {
+		return deporteRegistros;
+	}
+
+	public void setDeporteRegistros(List<DeporteRegistro> deporteRegistros) {
+		this.deporteRegistros = deporteRegistros;
+	}
+	
+	public void addDeporteRegistro(DeporteRegistro deporteRegistro) {
+		this.deporteRegistros.add(deporteRegistro);
+	}
+	
+	public void removeDeporteRegistro(DeporteRegistro deporteRegistro) {
+		this.deporteRegistros.remove(deporteRegistro);
+	}
+}

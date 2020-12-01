@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+    <fullyQualifiedTypeName name="com.formacionbdi.microservicios.app.usuarios.controllers.RegistroController"/>
+    <fullyQualifiedTypeName name="com.formacionbdi.microservicios.commons.alumnos.models.entity.Registro"/>
+    <fullyQualifiedTypeName name="com.formacionbdi.microservicios.commons.registros.models.entity.Registro"/>
+</qualifiedTypeNameHistroy>
